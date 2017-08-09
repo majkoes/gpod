@@ -1,0 +1,116 @@
+  <h1>{{title}}</h1>
+  <h2>Import Interfaces</h2>
+ 
+  <button *ngIf="!addNew" (click)="addNew= true">add new</button>
+  <div *ngIf="addNew">
+      <dl  class="dl-horizontal">
+      <dt><label>Import Interface Name</label></dt>
+      <dd> <input #importName /> </dd>
+       <dt><label>Import Interface File</label></dt>
+     <dd> <input #importFile /> </dd>
+      <dd><button (click)="add(importName.value, importFile.value); importName.value=''; importFile.value=''">
+        Add
+      </button></dd>
+      </dl>
+    </div>
+
+<div class="list-group list-view-pf list-view-pf-view">
+<ul style="list-style-type: none; padding: 0">
+ <li *ngFor="let importIF of importIFs">
+  <div class="list-group-item">
+    <div class="list-group-item-header">
+      <div class="list-view-pf-expand">
+        <span class="fa fa-angle-right"></span>
+      </div>
+     <!-- <div class="list-view-pf-checkbox">
+        <input type="checkbox">
+      </div>-->
+      <div class="list-view-pf-actions">
+        <button class="btn btn-default">Run</button>
+        <button class="btn btn-default">Stop</button>
+        <div class="dropdown pull-right dropdown-kebab-pf">
+ <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <span class="fa fa-ellipsis-v"></span>
+  </button> 
+  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight9">
+    <li><a (click)="delete(importIF)" href="#">Remove interface</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+</div>
+</div>
+      <div class="list-view-pf-main-info">
+        <div class="list-view-pf-left">
+          <span class="fa pficon-resources-full"></span>
+        </div>
+        <div class="list-view-pf-body">
+          <div class="list-view-pf-description">
+            <div class="list-group-item-heading">
+              {{importIF.name}}
+            </div>
+          <!--<div class="list-group-item-text">
+              The following snippet of text is <a href="#">rendered as link text</a>.
+            </div> -->
+          </div>
+         <!-- <div class="list-view-pf-additional-info">
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-screen"></span>
+              <strong>8</strong> Hosts
+            </div>
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-cluster"></span>
+              <strong>6</strong> Clusters
+            </div>
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-container-node"></span>
+              <strong>10</strong> Nodes
+            </div>
+            <div class="list-view-pf-additional-info-item">
+              <span class="pficon pficon-image"></span>
+              <strong>8</strong> Images
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="list-group-item-container container-fluid hidden">
+      <div class="close">
+        <span class="pficon pficon-close"></span>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div id="utilizationDonutChart1" class="example-donut-chart-utilization"></div>
+
+
+        </div>
+        <div class="col-md-9">
+          <dl class="dl-horizontal">
+            
+            <dt>Interface Id</dt>
+            <dd>{{importIF.id}}</dd>
+
+            <dt>Interface Name</dt>
+            <dd><input style="border: none" [(ngModel)]="importIF.name"/></dd>
+
+            <dt>Interface file</dt>
+            <dd><input style="border: none" [(ngModel)]="importIF.configuration.file"/></dd>
+            <dt></dt>
+            <dd> <button (click)="update(importIF);">Update</button></dd>
+          </dl>
+          <div>
+         
+        </div>
+          <p>
+           some description some description some description some description some description some description some description some description some description some description 
+           some description some description some description some description some description some description some description some description some description some description 
+           some description some description some description some description some description some description some description some description some description some description 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </li>
+  </ul>
+</div>

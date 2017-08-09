@@ -1,66 +1,105 @@
 import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { OnInit } from '@angular/core'; 
 import { ImportInterface } from './import-interface';
+import { ImportInterfaceDetail } from './import-interface-detail';
 import { RibsService } from './ribs.service';
+import { Configuration } from './configuration';
+
+import {AfterViewInit} from '@angular/core';  
+import { Renderer2, Inject, ElementRef } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'my-imports',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  template: `
-  <h1>{{title}}</h1>
-  <h2>Import Interfaces</h2>
-  <ul class="imports">
-    <li *ngFor="let importIF of importIFs"
-        [class.selected] = "importIF === selectedImportIF"
-       (click)="onSelect(importIF)">
-      {{importIF.name}}
-    </li>
-  </ul>
-  <import-detail [importIF]="selectedImportIF"></import-detail>
-  <br/>
-  <button *ngIf="!addNew" (click)="addNew= true">add new</button>
-  <div *ngIf="addNew">
-      <div><label>Import Interface Name</label>
-      <input #importName /> </div>
-      <div>
-      <label>Import Interface File</label>
-      <input #importFile /> </div>
-      <div><button (click)="add(importName.value, importFile.value); importName.value=''; importFile.value=''">
-        Add
-      </button></div>
-    </div>
-  `,
-  providers:[RibsService]
+  templateUrl: './import.component.html'
 })
 
-export class ImportComponent implements OnInit{
-	importIFs: ImportInterface[];
+
+
+export class ImportComponent implements OnInit, AfterViewInit {
+
+
+
+	importIFs: ImportInterfaceDetail[];
   addNew: boolean;
 
- 	selectedImportIF: ImportInterface;
-   importIF: ImportInterface;
+ 	selectedImportIFDetail: ImportInterfaceDetail;
+  importIFDetail: ImportInterfaceDetail;
+  importInterface: ImportInterface;
 
- 	constructor(private ribsService: RibsService) { }
+constructor(private ribsService: RibsService, private elementRef: ElementRef, @Inject(DOCUMENT) private _document) {};
 
 	ngOnInit(): void {
 		this.getImportIFs();
 	}
 
-	onSelect(importIF: ImportInterface) : void {
-    this.selectedImportIF = importIF;
+	onSelect(importIFDetail: ImportInterfaceDetail) : void {
+    this.selectedImportIFDetail = importIFDetail;
+    this.getImportIFById(this.selectedImportIFDetail.id);
 	}
 
 	getImportIFs(): void {
-		this.ribsService.getImportIFs().then(importIFs => this.importIFs = importIFs);
+		this.ribsService.getImportInterfaces().then(importIFs => this.importIFs = importIFs);
 	}
+
+  getImportIFById(id: number): void {
+    this.ribsService.getImportInterfaceById(id).then(importInterface => this.importInterface = importInterface);
+  }
 
   add(name: string, file: string): void {
       if (!name || !file) { return; }
-      this.ribsService.createImportInterface(name, file);
+
+      var newImportInterface = new ImportInterface(this.getIncrementedId(), name, new Configuration(file));
+
+      this.ribsService.createImportInterface(newImportInterface);
       location.reload();
       this.addNew = false;
     };
+
+
+
+  update(importInterface: ImportInterface): void {
+    this.ribsService.editImportInterface(importInterface);
+    confirm("Interface updated");
+
+  }
+
+  delete(importInterface: ImportInterface): void {
+    if (confirm("Delete interface configuration " + importInterface.name +" ?"))
+    {
+      this.ribsService.deleteImportInterfaceById(importInterface);
+      location.reload();
+    }
+  }
+
+
+    run(id: number): void{
+      confirm("run if " + this.importInterface.id);
+    }
+
+    stop(id: number) : void {
+      confirm("stop if " + this.importInterface.id);
+    }
+
+//temp
+  getIncrementedId() : number {
+    let res = 0;
+     for (let i of this.importIFs){
+       if (i.id > res) { res = i.id };
+     }
+
+     return res + 1;
+  }
+
+
+ ngAfterViewInit() {
+   // load script
+  var s = this._document.createElement("script");
+  s.type = "text/javascript";
+  s.src = "assets/imports.js";
+  this.elementRef.nativeElement.appendChild(s); 
+  }
 }
 
 

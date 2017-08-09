@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import { ImportInterface } from './import-interface';
+import { ImportInterfaceDetail } from './import-interface-detail';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/Rx';
@@ -14,21 +15,43 @@ export class RibsService{
 
 	constructor(private http: Http) { }
 
-	getImportIFs(): Promise<ImportInterface[]> { 
+	getImportInterfaces(): Promise<ImportInterfaceDetail[]> { 
 		return this.http.get(this.importsUrl)
 		.toPromise()
-		.then(response => response.json() as ImportInterface[])
+		.then(response => response.json() as ImportInterfaceDetail[])
 		.catch(this.handleError);
 	};
 
-	createImportInterface(name: string, file: string): Promise<ImportInterface> {
+	createImportInterface(importInterface: ImportInterface): Promise<ImportInterface> {
   	return this.http
-    .post(this.importsUrl, JSON.stringify({id: this.guid(), name: name, file: file}), {headers: this.headers})
+    .post(this.importsUrl, JSON.stringify(importInterface), {headers: this.headers})
     .toPromise()
     .then(res => res.json() as ImportInterface)
     .catch(this.handleError);
 	}
 
+	getImportInterfaceById(id: number): Promise<ImportInterface> {
+		return this.http.get(this.importsUrl+"/"+id)
+		.toPromise()
+		.then(response => response.json() as ImportInterface)
+		.catch(this.handleError);
+	}
+
+	editImportInterface(importInterface: ImportInterface): Promise<ImportInterface> {
+		return this.http.put(this.importsUrl+"/"+importInterface.id, JSON.stringify(importInterface), {headers: this.headers})
+		.toPromise()
+		.then(response => response.json() as ImportInterface)
+		.catch(this.handleError);
+	}
+
+	deleteImportInterfaceById(importInterface: ImportInterface): void{
+		this.http.delete(this.importsUrl+"/"+importInterface.id)
+		.toPromise()
+    	.then(res => res.json() as ImportInterface)
+		.catch(this.handleError);
+	}
+
+	// temporary
 	private guid() {
   	function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)

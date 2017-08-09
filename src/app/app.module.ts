@@ -4,11 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule} from '@angular/router';
 import { HttpModule } from '@angular/http';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 import { AppComponent } from './app.component';
 import { ImportDetailComponent } from './import-detail.component';
 import { ImportComponent } from './import.component';
 import { RibsService } from './ribs.service';
 import { SomethingElseComponent } from './something-else.component';
+
 
 @NgModule({
   declarations: [
@@ -37,7 +40,8 @@ import { SomethingElseComponent } from './something-else.component';
     }])
   ],
   providers: [RibsService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 
 
