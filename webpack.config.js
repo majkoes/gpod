@@ -1,24 +1,30 @@
-var webpackMerge = require('webpack-merge');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var commonConfig = require('./webpack.common.js');
-var helpers = require('./helpers');
+const path = require('path');
 
-module.exports = webpackMerge(commonConfig, {
-  devtool: 'cheap-module-eval-source-map',
-
-  output: {
-    path: helpers.root('dist'),
-    publicPath: 'http://0.0.0.0:4200',
-    filename: '[name].js',
-    chunkFilename: '[id].chunk.js'
+module.exports = {
+    entry: [
+            'webpack-dev-server/client?http://' + require("os").hostname() + ':4200/',
+            'webpack/hot/only-dev-server',
+            './src/main.ts'
+    ],
+    output: {
+              filename: 'app.js',
+              path: path.resolve(__dirname, 'dist')
+            },
+    resolve: {
+            extensions: ['.ts', '.js']
+      },
+     // Source maps support ('inline-source-map' also works)
+      devtool: 'source-map',
+       // Add the loader for .ts files.
+  module: {
+    loaders: [
+      {
+        test: /\.tsx?$/,
+        loader: 'awesome-typescript-loader'
+      }
+    ]
   },
-
   plugins: [
-    new ExtractTextPlugin('[name].css')
-  ],
-
-  devServer: {
-    historyApiFallback: true,
-    stats: 'minimal'
-  }
-});
+      new CheckerPlugin()
+  ]  
+}
