@@ -23,8 +23,5 @@ module.exports = {
         loader: 'awesome-typescript-loader'
       }
     ]
-  },
-  plugins: [
-      new CheckerPlugin()
-  ]  
+  }
 }
