@@ -36,6 +36,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/jquery": "^3.2.11",
     "@types/node": "~6.0.60",
+    "awesome-typescript-loader": "^3.2.2",
     "bootstrap": "^3.3.7",
     "codelyzer": "~3.0.1",
     "jasmine-core": "~2.6.2",
