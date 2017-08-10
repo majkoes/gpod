@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host http://gpod-myproject.192.168.99.100.nip.io",
+    "start": "ng serve --host 127.0.0.0",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
