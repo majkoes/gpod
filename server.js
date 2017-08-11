@@ -6,7 +6,7 @@ app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
 
 app.get('/', function (req, res) {
-    res.sendfile(__dirname + '/src/index.html');
+    res.sendfile(__dirname + '/dist/index.html');
 });
 
 http.createServer(app).listen(app.get('port'), app.get('ip'), function(){
